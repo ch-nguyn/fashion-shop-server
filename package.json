@@ -4,7 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon ./db/connect.js",
+    "start": "node connect.js",
     "debug": "ndb server.js"
   },
   "author": "",
