@@ -11,6 +11,7 @@ const mongoSanitize = require("express-mongo-sanitize");
 const xss = require("xss-clean");
 var cors = require("cors");
 const hpp = require("hpp");
+const compression = require("compression");
 const cookieParser = require("cookie-parser");
 const path = require("path");
 const fs = require("fs");
@@ -46,6 +47,8 @@ app.use(
     whitelist: ["duration"],
   })
 );
+
+app.use(compression());
 
 app.use("/api/v1/products", productRouter);
 app.use("/api/v1/users", userRouter);
