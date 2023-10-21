@@ -10,6 +10,8 @@ const helmet = require("helmet");
 const mongoSanitize = require("express-mongo-sanitize");
 const xss = require("xss-clean");
 var cors = require("cors");
+const mongoose = require("mongoose");
+const dotenv = require("dotenv");
 const hpp = require("hpp");
 const compression = require("compression");
 const cookieParser = require("cookie-parser");
@@ -72,5 +74,23 @@ app.get("/api/v1/image/:img", (req, res) => {
 });
 
 app.use(errorHandler);
+
+dotenv.config({ path: "./config.env" });
+
+const port = process.env.PORT || 3000;
+mongoose
+  .connect(process.env.DATABASE, {
+    useNewUrlParser: true,
+    useCreateIndex: true,
+    useFindAndModify: false,
+  })
+  .then((con) => {});
+
+const server = app.listen(port, () => {});
+
+process.on("unhandledRejection", (err) => {
+  console.log("UNHANDLED ERROR");
+  server.close(() => process.exit(1));
+});
 
 module.exports = app;
