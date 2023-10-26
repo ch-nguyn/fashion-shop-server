@@ -20,20 +20,20 @@ const fs = require("fs");
 
 // Use this after the variable declaration
 const app = express();
-// app.use(cors());
+app.use(cors());
 
-app.use((req, res, next) => {
-  res.setHeader(
-    "Access-Control-Allow-Origin",
-    "https://fashion-shop-client.vercel.app"
-  );
-  res.setHeader(
-    "Access-Control-Allow-Methods",
-    "GET, POST, PUT, DELETE, PATCH"
-  );
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-  next();
-});
+// app.use((req, res, next) => {
+//   res.setHeader(
+//     "Access-Control-Allow-Origin",
+//     "https://fashion-shop-client.vercel.app"
+//   );
+//   res.setHeader(
+//     "Access-Control-Allow-Methods",
+//     "GET, POST, PUT, DELETE, PATCH"
+//   );
+//   res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+//   next();
+// });
 
 app.use(cookieParser());
 
