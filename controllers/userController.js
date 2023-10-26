@@ -5,6 +5,7 @@ const catchAsync = require("../utils/catchAsync");
 const { StatusCodes } = require("http-status-codes");
 const multer = require("multer");
 const sharp = require("sharp");
+const uploadToCloudinary = require("../utils/cloudinary");
 
 const filteredObj = (obj, ...acceptedFields) => {
   let newObj = {};
@@ -50,16 +51,15 @@ const resizeUserPhoto = catchAsync(async (req, res, next) => {
     return next();
   }
 
-  req.file.filename = `${req.protocol}://${req.get("host")}/api/v1/image/user-${
-    req.user._id
-  }.jpeg`;
-
-  sharp(req.file.buffer)
+  await sharp(req.file.buffer)
     .resize(500, 500)
     .toFormat("jpeg")
     .jpeg({ quality: 90 })
     .toFile(`assets/img/users/user-${req.user._id}.jpeg`);
-
+  const result = await uploadToCloudinary(
+    `./assets/img/users/user-${req.user._id}.jpeg`
+  );
+  req.file.filename = result;
   next();
 });
 
