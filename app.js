@@ -78,22 +78,4 @@ app.get("/api/v1/image/:img", (req, res) => {
 
 app.use(errorHandler);
 
-dotenv.config({ path: "./config.env" });
-
-const port = process.env.PORT || 3000;
-mongoose
-  .connect(process.env.DATABASE, {
-    useNewUrlParser: true,
-    useCreateIndex: true,
-    useFindAndModify: false,
-  })
-  .then((con) => {});
-
-const server = app.listen(port, (res) => {});
-
-process.on("unhandledRejection", (err) => {
-  console.log("UNHANDLED ERROR");
-  server.close(() => process.exit(1));
-});
-
 module.exports = app;
