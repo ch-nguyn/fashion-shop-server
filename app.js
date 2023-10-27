@@ -27,7 +27,9 @@ app.use(cors());
 app.use(cookieParser());
 
 // Set security HTTP headers
-app.use(helmet({ crossOriginResourcePolicy: false }));
+app.use(
+  helmet({ crossOriginResourcePolicy: false, contentSecurityPolicy: false })
+);
 
 const limiter = rateLimit({
   max: 1000,
@@ -77,6 +79,9 @@ app.get("/api/v1/image/:img", (req, res) => {
     });
     res.end(data);
   });
+});
+app.get("/*", (req, res) => {
+  res.sendFile(path.join(__dirname, "./build/index.html"));
 });
 
 app.use(errorHandler);
