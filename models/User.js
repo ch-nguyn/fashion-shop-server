@@ -2,7 +2,21 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const validator = require("validator");
 const crypto = require("crypto");
-const { stringify } = require("querystring");
+
+const addressSchema = new mongoose.Schema({
+  province: {
+    type: String,
+  },
+  district: {
+    type: String,
+  },
+  ward: {
+    type: String,
+  },
+  detailAddress: String,
+  zipcode: String,
+  country: String,
+});
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -27,22 +41,7 @@ const userSchema = new mongoose.Schema({
     default:
       "https://secure.gravatar.com/avatar/be3bb8ab4714145f6cbbceff5a89d68a?s=60&d=mm&r=g",
   },
-  address: [
-    {
-      province: {
-        type: String,
-      },
-      district: {
-        type: String,
-      },
-      ward: {
-        type: String,
-      },
-      detailAddress: String,
-      zipcode: String,
-      country: String,
-    },
-  ],
+  address: [addressSchema],
 
   phoneNumber: {
     type: String,

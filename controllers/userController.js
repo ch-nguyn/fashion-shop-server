@@ -84,7 +84,7 @@ const updateMe = catchAsync(async (req, res, next) => {
     );
   }
   const user = await User.findById(req.user._id);
-  const filteredBody = filteredObj(
+  let filteredBody = filteredObj(
     req.body,
     "name",
     "photo",
@@ -92,6 +92,10 @@ const updateMe = catchAsync(async (req, res, next) => {
     "phoneNumber",
     "fullName"
   );
+
+  if (req.body.address) {
+    filteredBody.address = [...user.address, filteredBody.address];
+  }
 
   if (req.file) filteredBody.photo = req.file.filename;
 
@@ -103,6 +107,35 @@ const updateMe = catchAsync(async (req, res, next) => {
   res.status(StatusCodes.OK).json({
     status: "success",
     user: updatedUser,
+  });
+});
+
+const deleteAddress = catchAsync(async (req, res, next) => {
+  const { user } = req;
+  const { id } = req.params;
+  const addressIDs = user.address.map((singleAddress) => {
+    return singleAddress._id;
+  });
+  if (!addressIDs.includes(id)) {
+    return next(
+      new AppError("There's no address with that ID", StatusCodes.NOT_FOUND)
+    );
+  }
+
+  const newUserAddress = user.address.filter((singleAddress) => {
+    return singleAddress._id.toString() !== id;
+  });
+
+  await User.findByIdAndUpdate(
+    user._id,
+    { address: newUserAddress },
+    {
+      new: true,
+    }
+  );
+  res.status(StatusCodes.NO_CONTENT).json({
+    status: "success",
+    data: null,
   });
 });
 
@@ -159,4 +192,5 @@ module.exports = {
   getMe,
   uploadUserPhoto,
   resizeUserPhoto,
+  deleteAddress,
 };

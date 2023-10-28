@@ -9,6 +9,7 @@ const {
   getMe,
   uploadUserPhoto,
   resizeUserPhoto,
+  deleteAddress,
 } = require("../controllers/userController");
 
 const {
@@ -25,6 +26,8 @@ router.patch(
   updateMe
 );
 router.delete("/delete-me", checkAuthenticate, deleteMe);
+
+router.delete("/delete-address/:id", checkAuthenticate, deleteAddress);
 
 router.route("/").get(checkAuthenticate, checkPermission("admin"), getAllUsers);
 router
