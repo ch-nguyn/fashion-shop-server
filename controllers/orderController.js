@@ -19,8 +19,14 @@ const getAllOrders = catchAsync(async (req, res, next) => {
 
 const createOrder = catchAsync(async (req, res, next) => {
   // cartItems: quantity, product():id
-  const { cartItems, shippingFee } = req.body;
+  const { cartItems, shippingFee, address } = req.body;
   const { user } = req;
+
+  if (!address) {
+    return next(
+      new AppError("Please provide address!", StatusCodes.BAD_REQUEST)
+    );
+  }
 
   if (!cartItems || cartItems.length < 1) {
     return next(new AppError("No items provided!", StatusCodes.BAD_REQUEST));
@@ -70,6 +76,7 @@ const createOrder = catchAsync(async (req, res, next) => {
     total,
     orderItems,
     user,
+    address,
   });
 
   res.status(StatusCodes.CREATED).json({
@@ -93,7 +100,10 @@ const getSingleOrder = catchAsync(async (req, res, next) => {
 });
 
 const getUserOrders = catchAsync(async (req, res, next) => {
-  const orders = await Order.find({ user: req.user._id });
+  const orders = await Order.find({ user: req.user._id }).populate({
+    path: "orderItems.product",
+    select: `name photo brand`,
+  });
   res
     .status(StatusCodes.OK)
     .json({ status: "success", total: orders.length, orders });

@@ -36,6 +36,10 @@ const orderSchema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
+  address: {
+    type: String,
+    required: true,
+  },
   createdAt: {
     type: Date,
     default: Date.now(),
@@ -45,7 +49,7 @@ const orderSchema = new mongoose.Schema({
 orderSchema.pre(/^find/, function (next) {
   this.populate({
     path: "user",
-    select: "name email address phoneNumber",
+    select: "name email phoneNumber",
   });
   next();
 });
