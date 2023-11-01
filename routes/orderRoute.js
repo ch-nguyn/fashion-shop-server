@@ -22,7 +22,7 @@ router
 
 router
   .route("/:id")
-  .get(checkAuthenticate, getSingleOrder)
+  .get(checkAuthenticate, checkPermission("admin"), getSingleOrder)
   .patch(checkAuthenticate, checkPermission("admin"), updateOrder);
 
 module.exports = router;

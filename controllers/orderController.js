@@ -77,6 +77,7 @@ const createOrder = catchAsync(async (req, res, next) => {
     orderItems,
     user,
     address,
+    isPaid: req.body.isPaid,
   });
 
   res.status(StatusCodes.CREATED).json({

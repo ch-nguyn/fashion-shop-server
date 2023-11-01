@@ -2,6 +2,7 @@ const express = require("express");
 const productRouter = require("./routes/productRoute");
 const userRouter = require("./routes/userRoute");
 const orderRouter = require("./routes/orderRoute");
+const paymentRouter = require("./routes/paymentRoute");
 const errorHandler = require("./controllers/errorController");
 const authRouter = require("./routes/authRoute");
 const reviewRouter = require("./routes/reviewRoute");
@@ -63,6 +64,7 @@ app.use("/api/v1/users", userRouter);
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/reviews", reviewRouter);
 app.use("/api/v1/orders", orderRouter);
+app.use("/api/v1/payment", paymentRouter);
 app.get("/api/v1/image/:img", (req, res) => {
   const imagePath = path.join(__dirname, `/assets/img/users/${req.params.img}`);
 
