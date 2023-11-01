@@ -6,7 +6,11 @@ const { StatusCodes } = require("http-status-codes");
 const Product = require("../models/Product");
 
 const getAllOrders = catchAsync(async (req, res, next) => {
-  const orders = await Order.find().populate({
+  const features = new APIFeatures(Order.find(), req.query)
+    .limitFields()
+    .filter()
+    .sort();
+  const orders = await features.query.populate({
     path: "orderItems.product",
     select: `name photo brand`,
   });
@@ -101,7 +105,13 @@ const getSingleOrder = catchAsync(async (req, res, next) => {
 });
 
 const getUserOrders = catchAsync(async (req, res, next) => {
-  const orders = await Order.find({ user: req.user._id }).populate({
+  const features = new APIFeatures(
+    Order.find({ user: req.user._id }),
+    req.query
+  )
+    .limitFields()
+    .sort();
+  const orders = await features.query.populate({
     path: "orderItems.product",
     select: `name photo brand`,
   });

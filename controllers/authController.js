@@ -159,7 +159,7 @@ const checkAuthenticate = catchAsync(async (req, res, next) => {
   }
   if (!token) {
     return next(
-      new AppError("You must login to continue", StatusCodes.FORBIDDEN)
+      new AppError("You must login to continue", StatusCodes.UNAUTHORIZED)
     );
   }
 
@@ -327,10 +327,16 @@ const updatePassword = catchAsync(async (req, res, next) => {
   await user.save();
 
   const accessToken = tokenSign(user, process.env.JWT_ACCESSTOKEN_EXPIRES_IN);
-  const refreshToken = await Token.findOne({ user: user._id });
+  await Token.findOneAndDelete({ user: user._id });
+
+  const userAgent = req.headers["user-agent"];
+  const ip = req.ip;
+  const refreshToken = tokenSign(user, process.env.JWT_REFRESHTOKEN_EXPIRES_IN);
+
   res.clearCookie("refreshToken");
   res.clearCookie("accessToken");
   saveTokensInCookie(res, accessToken, refreshToken);
+  await Token.create({ refreshToken, ip, userAgent, user: user._id });
 
   res.status(StatusCodes.OK).json({
     status: "success",
