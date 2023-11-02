@@ -49,7 +49,7 @@ const signup = catchAsync(async (req, res, next) => {
   </p>
   <div>
     <a
-      href="http://localhost:3000/verify-account/${newUser._id}"
+      href="https://fashion-shop-server-production.up.railway.app/verify-account/${newUser._id}"
       style="padding: 12px 24px 12px 24px; background-color:#0cc3ce; color:white; text-decoration:none;"
     >
       Verify now
@@ -206,7 +206,7 @@ const forgotPassword = catchAsync(async (req, res, next) => {
   await user.save({ validateBeforeSave: false });
 
   //create url for reset password with this token
-  const resetURL = `http://localhost:3000/account/reset-password/${resetToken}`;
+  const resetURL = `https://fashion-shop-server-production.up.railway.app/account/reset-password/${resetToken}`;
   const html = `<div>
   <div>
   <p ></p>

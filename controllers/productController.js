@@ -4,6 +4,22 @@ const AppError = require("../utils/appErrors");
 const APIFeatures = require("../utils/apiFeatures");
 const { StatusCodes } = require("http-status-codes");
 
+const searchProducts = catchAsync(async (req, res, next) => {
+  let name = req.query.name;
+  if (!name) {
+    return next(new AppError("You nust provide name to search"));
+  }
+  const products = await Product.find();
+  let searchProducts = products.filter(function (item) {
+    return item.name.toLowerCase().indexOf(name.toLowerCase()) !== -1;
+  });
+  res.status(200).json({
+    status: "success",
+    total: searchProducts.length,
+    products: searchProducts,
+  });
+});
+
 const getAllProducts = catchAsync(async (req, res, next) => {
   const features = new APIFeatures(Product.find(), req.query)
     .limitFields()
@@ -76,4 +92,5 @@ module.exports = {
   createProduct,
   updateProduct,
   deleteProduct,
+  searchProducts,
 };

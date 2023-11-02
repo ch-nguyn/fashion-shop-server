@@ -23,12 +23,8 @@ const fs = require("fs");
 const app = express();
 
 app.use(express.static("build"));
-const corsOptions = {
-  origin: "https://fashion-shop-server-production.up.railway.app",
-  credentials: true, //access-control-allow-credentials:true
-  optionSuccessStatus: 200,
-};
-app.use(cors(corsOptions));
+
+app.use(cors());
 
 app.use(cookieParser());
 

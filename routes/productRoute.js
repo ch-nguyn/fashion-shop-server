@@ -5,6 +5,7 @@ const {
   getSingleProduct,
   updateProduct,
   deleteProduct,
+  searchProducts,
 } = require("../controllers/productController");
 const {
   checkAuthenticate,
@@ -12,6 +13,8 @@ const {
 } = require("../controllers/authController");
 
 const router = express.Router();
+
+router.get("/search", searchProducts);
 
 router
   .route("/")
