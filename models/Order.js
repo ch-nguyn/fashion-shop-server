@@ -12,43 +12,42 @@ const singleOrderItemSchema = mongoose.Schema({
   price: { type: Number, required: true },
 });
 
-const orderSchema = new mongoose.Schema({
-  shippingFee: {
-    type: Number,
-    required: true,
+const orderSchema = new mongoose.Schema(
+  {
+    shippingFee: {
+      type: Number,
+      required: true,
+    },
+    isPaid: {
+      type: Boolean,
+      default: false,
+    },
+    subtotal: {
+      type: Number,
+      required: true,
+    },
+    total: {
+      type: Number,
+      required: true,
+    },
+    orderItems: [singleOrderItemSchema],
+    status: {
+      type: String,
+      enum: ["pending", "failed", "delivering", "delivered", "canceled"],
+      default: "pending",
+    },
+    user: {
+      type: mongoose.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    address: {
+      type: String,
+      required: true,
+    },
   },
-  isPaid: {
-    type: Boolean,
-    default: false,
-  },
-  subtotal: {
-    type: Number,
-    required: true,
-  },
-  total: {
-    type: Number,
-    required: true,
-  },
-  orderItems: [singleOrderItemSchema],
-  status: {
-    type: String,
-    enum: ["pending", "failed", "delivering", "delivered", "canceled"],
-    default: "pending",
-  },
-  user: {
-    type: mongoose.Types.ObjectId,
-    ref: "User",
-    required: true,
-  },
-  address: {
-    type: String,
-    required: true,
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now(),
-  },
-});
+  { timestamps: true }
+);
 
 orderSchema.pre(/^find/, function (next) {
   this.populate({

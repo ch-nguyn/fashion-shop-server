@@ -21,6 +21,45 @@ const getAllOrders = catchAsync(async (req, res, next) => {
   });
 });
 
+const getMonthlySales = catchAsync(async (req, res, next) => {
+  const { year } = req.params;
+  const monthlyOrders = await Order.aggregate([
+    {
+      $match: {
+        createdAt: {
+          $gte: new Date(`${year}-01-01`),
+          $lte: new Date(`${year}-12-31`),
+        },
+      },
+    },
+    {
+      $group: {
+        _id: { $month: "$createdAt" },
+        totalOrders: { $sum: 1 },
+        orders: { $push: "$_id" },
+        totalMoney: {
+          $sum: "$total",
+        },
+      },
+    },
+    {
+      $addFields: { month: "$_id" },
+    },
+    {
+      $project: {
+        _id: 0,
+      },
+    },
+    {
+      $sort: { month: 1 },
+    },
+  ]);
+  res.status(200).json({
+    status: "success",
+    monthlyOrders,
+  });
+});
+
 const createOrder = catchAsync(async (req, res, next) => {
   // cartItems: quantity, product():id
   const { cartItems, shippingFee, address } = req.body;
@@ -147,4 +186,5 @@ module.exports = {
   getSingleOrder,
   getUserOrders,
   updateOrder,
+  getMonthlySales,
 };

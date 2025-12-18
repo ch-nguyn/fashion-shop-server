@@ -21,12 +21,19 @@ const searchProducts = catchAsync(async (req, res, next) => {
 });
 
 const getAllProducts = catchAsync(async (req, res, next) => {
-  const features = new APIFeatures(Product.find(), req.query)
+  const features = new APIFeatures(Product.find({}), req.query)
     .limitFields()
     .filter()
     .sort();
 
+  // const products = await features.query;
   const products = await features.query;
+  let searchProducts = [...products];
+  // if (req.query.name) {
+  //   searchProducts = searchProducts.filter(function (item) {
+  //     return item.name.toLowerCase().indexOf(name.toLowerCase()) !== -1;
+  //   });
+  // }
   res.status(200).json({
     status: "success",
     total: products.length,

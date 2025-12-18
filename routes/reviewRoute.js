@@ -6,8 +6,19 @@ const {
   updateReview,
   deleteReview,
   createReview,
+  getAverageRating,
 } = require("../controllers/reviewController");
-const { checkAuthenticate } = require("../controllers/authController");
+const {
+  checkAuthenticate,
+  checkPermission,
+} = require("../controllers/authController");
+
+router.get(
+  "/average-rating",
+  checkAuthenticate,
+  checkPermission("admin"),
+  getAverageRating
+);
 
 router.route("/").get(getAllReviews).post(checkAuthenticate, createReview);
 router

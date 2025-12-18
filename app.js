@@ -50,13 +50,6 @@ app.set("trust proxy", 1);
 // Data sanitization against XSS
 app.use(xss());
 
-// Prevent parameter pollution
-app.use(
-  hpp({
-    whitelist: ["duration"],
-  })
-);
-
 app.get("/api/v1", (req, res) => {
   res.send("Server is running");
 });

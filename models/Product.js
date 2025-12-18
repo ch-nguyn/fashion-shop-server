@@ -36,10 +36,7 @@ const productSchema = new mongoose.Schema(
       type: [String],
       required: [true, "Please provide product category"],
     },
-    tag: {
-      type: [String],
-      required: true,
-    },
+
     brand: {
       type: String,
       required: [true, "Please provide product brand"],
@@ -56,14 +53,11 @@ const productSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
-    createAt: {
-      type: Date,
-      default: Date.now(),
-    },
   },
   {
     toObject: { virtuals: true },
     toJSON: { virtuals: true },
+    timestamps: true,
   }
 );
 

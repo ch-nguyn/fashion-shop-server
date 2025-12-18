@@ -4,6 +4,16 @@ const { StatusCodes } = require("http-status-codes");
 const catchAsync = require("../utils/catchAsync");
 const { ObjectId } = require("mongodb");
 
+const getAverageRating = catchAsync(async (req, res, next) => {
+  const reviews = await Review.find();
+  const averageRating =
+    reviews.reduce((init, review) => init + review.rating, 0) / reviews.length;
+  res.status(200).json({
+    status: "success",
+    averageRating,
+  });
+});
+
 const getAllReviews = catchAsync(async (req, res, next) => {
   const reviews = await Review.find();
   res.status(StatusCodes.OK).json({
@@ -92,4 +102,5 @@ module.exports = {
   updateReview,
   deleteReview,
   createReview,
+  getAverageRating,
 };

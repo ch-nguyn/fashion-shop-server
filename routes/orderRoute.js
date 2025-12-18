@@ -9,9 +9,12 @@ const {
   getSingleOrder,
   getUserOrders,
   updateOrder,
+  getMonthlySales,
 } = require("../controllers/orderController");
 
 const router = express.Router();
+
+router.get("/monthly-sales/:year", getMonthlySales);
 
 router.get("/my-orders", checkAuthenticate, getUserOrders);
 

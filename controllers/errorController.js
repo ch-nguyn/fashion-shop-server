@@ -13,19 +13,19 @@ const prodError = (err, res) => {
     });
   } else {
     res.status(500).json({
-      status: 'error',
-      message: 'Something went very wrong!',
+      status: "error",
+      message: "Something went very wrong!",
     });
   }
 };
 
 module.exports = (err, req, res, next) => {
   err.statusCode = err.statusCode || 500;
-  err.status = err.status || 'error';
+  err.status = err.status || "error";
 
-  if (process.env.NODE_ENV === 'development') {
+  if (process.env.NODE_ENV === "development") {
     devError(err, res);
-  } else if (process.env.NODE_ENV === 'production') {
+  } else if (process.env.NODE_ENV === "production") {
     prodError(err, res);
   }
 };
