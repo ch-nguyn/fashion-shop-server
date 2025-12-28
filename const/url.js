@@ -1,0 +1,1 @@
+const DEPLOYMENT_URL = 'https://fashion-shop-server-production.up.railway.app'
