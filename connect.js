@@ -7,7 +7,12 @@ dotenv.config({ path: "./config.env" });
 const port = process.env.PORT || 3000;
 
 mongoose
-  .connect(process.env.DATABASE, { useUnifiedTopology: true })
+  .connect(process.env.DATABASE, {
+    useNewUrlParser: true,
+    useCreateIndex: true,
+    useFindAndModify: false,
+    useUnifiedTopology: true
+  })
   .then((con) => {});
 
 const server = app.listen(port, () => {});
